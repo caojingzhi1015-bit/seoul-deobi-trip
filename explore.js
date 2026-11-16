@@ -66,7 +66,7 @@
   if(e.target.closest('.explore-close,[data-explore-skip]'))dialog.close();
   if(e.target.closest('[data-explore-next]'))next();
   if(e.target.closest('[data-explore-back]')){collect();step=step===4?0:step-1;render();}
-  const add=e.target.closest('[data-explore-add]');if(add){const id=add.dataset.exploreAdd,day=+dialog.querySelector(`[data-explore-day="${id}"]`).value;if(day>=0&&day<4&&!saved.added.some(a=>a.id===id)&&originalDay(id)<0){saved.added.push({id,day});const ok=store();apply();render();dialog.querySelector('#explore-status').textContent=lookup[id].name+'已加入'+DAYS[day].date+(ok?'，已保存在此浏览器。':'；浏览器不允许保存，刷新后可能丢失。');}}
+  const add=e.target.closest('[data-explore-add]');if(add){const id=add.dataset.exploreAdd,day=+dialog.querySelector(`[data-explore-day="${id}"]`).value;if(day>=0&&day<4&&!saved.added.some(a=>a.id===id)&&originalDay(id)<0){saved.added.push({id,day});const ok=store();apply();render();dialog.querySelector(`[data-explore-result="${id}"]`)?.scrollIntoView({block:'nearest'});dialog.querySelector('#explore-status').textContent=lookup[id].name+'已加入'+DAYS[day].date+(ok?'，已保存在此浏览器。':'；浏览器不允许保存，刷新后可能丢失。');}}
   const view=e.target.closest('[data-explore-view]');if(view){dialog.close();activate(+view.dataset.exploreView);document.querySelector('#journey').scrollIntoView({behavior:'smooth'});}
   const remove=e.target.closest('[data-explore-remove]');if(remove)removeAddition(remove.dataset.exploreRemove,true);
  });
@@ -75,7 +75,7 @@
  function exportSvg(route,day){const height=180+route.points.length*92;return URL.createObjectURL(new Blob([`<svg xmlns="http://www.w3.org/2000/svg" width="760" height="${height}" viewBox="0 0 760 ${height}"><rect width="760" height="${height}" fill="#edf3ef"/><style>text{font-family:Microsoft YaHei,sans-serif;fill:#213f3b}</style><text x="40" y="45" font-size="25">${safe(DAYS[day].date)} · 我的探索动线</text><text x="40" y="80" font-size="14">机动站点需另腾时间；连线仅表示顺序，不是实际交通导航。</text>${route.points.map((p,i)=>`<circle cx="55" cy="${130+i*92}" r="18" fill="#315d52"/><text x="55" y="${136+i*92}" text-anchor="middle" style="fill:white">${i+1}</text><text x="90" y="${124+i*92}" font-size="14">${safe(p.time)}</text><text x="90" y="${152+i*92}" font-size="20">${safe(p.name)}</text>`).join('')}</svg>`],{type:'image/svg+xml'}));}
  const urls=new Map();
  function apply(){
-  document.querySelectorAll('.explore-added,.explore-day-note').forEach(e=>e.remove());
+  document.querySelectorAll('.explore-added,.explore-day-note,.explore-budget-note').forEach(e=>e.remove());
   for(let day=0;day<5;day++){
    const route=JSON.parse(JSON.stringify(base[day])),adds=saved.added.filter(a=>a.day===day&&lookup[a.id]&&coord[a.id]&&originalDay(a.id)<0),originalCore=new Set(route.core.map(i=>route.points[i]));
    if(urls.has(day)){URL.revokeObjectURL(urls.get(day));urls.delete(day);}
@@ -87,13 +87,14 @@
    ROUTES[day]=route;
    document.dispatchEvent(new CustomEvent('itinerarychange',{detail:day}));
    const timeline=document.querySelector(`#day-${day} .timeline`);
-   if(adds.length){const note=document.createElement('p');note.className='explore-day-note';note.textContent='已加入'+adds.length+'个探索地点，需另外腾出约'+adds.reduce((n,a)=>n+tags[a.id][3],0)+'分钟。地图已插入候选顺序；基础时刻未顺延，优先用机动段或替换同区店铺。';timeline.before(note);}
+   if(adds.length){const note=document.createElement('p');note.className='explore-day-note';note.textContent='已加入'+adds.length+'个探索地点，需另外腾出约'+adds.reduce((n,a)=>n+tags[a.id][3],0)+'分钟。地图已插入候选顺序；基础时刻未顺延，优先用机动段或替换同区店铺。'+(adds.some(a=>tags[a.id][0])?' 新增餐饮按建议菜单另留约¥'+adds.reduce((n,a)=>n+(tags[a.id][0]?tags[a.id][2]:0),0)+'/人，基础预算表未包含。':'');timeline.before(note);}
    route.points.filter(p=>p.explore).forEach(point=>{const p=lookup[point.place],node=document.createElement('div');node.className='stop explore-added';node.innerHTML=`<div class="time">${safe(point.time)}</div><div><b>${safe(point.name)}</b><p>${safe(point.detail)}</p><a href="${safe(map(p))}" target="_blank" rel="noopener">Naver地图 ↗</a><button data-nearby-place="${p.id}">逛附近 ↗</button><button data-explore-remove="${p.id}">从当天移除</button></div>`;
     const index=route.points.indexOf(point);let anchor=null;
     for(let i=index-1;i>=0&&!anchor;i--){const id=route.points[i].place;if(id)anchor=[...timeline.querySelectorAll('.stop')].find(s=>s.querySelector(`[data-place="${id}"]`)||s.dataset.exploreId===id);}
     node.dataset.exploreId=p.id;if(anchor)anchor.after(node);else timeline.prepend(node);
    });
   }
+  const extraFood=saved.added.reduce((n,a)=>n+(tags[a.id][0]?tags[a.id][2]:0),0);if(extraFood){const note=document.createElement('p');note.className='notice explore-budget-note';note.textContent='你已追加探索餐饮，按建议菜单另留约¥'+extraFood+'/人（两人约¥'+(extraFood*2)+'），未计入下方基础预算；若替换原餐则按实际差额计算，购物与交通另计。';document.querySelector('#budget h2').after(note);}
   const count=saved.added.length;banner.querySelector('strong').textContent=saved.profile?'为你的喜欢，留几站首尔。':'这次首尔，想遇见什么？';banner.querySelector('small').textContent=saved.profile?'偏好已设置'+(count?' · 新增'+count+'个探索地点':' · 查看推荐，选一站加入行程'):'选团体、风景和口味，找到适合你的那几站。';banner.querySelector('button').textContent=saved.profile?'查看我的推荐 ↗':'探索我的喜好 ↗';
  }
  if(saved.added.length||saved.profile)apply();
