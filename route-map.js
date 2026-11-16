@@ -6,7 +6,7 @@
   const nav = point => point.place && lookup[point.place] ? map(lookup[point.place]) : 'https://map.naver.com/p/search/'+encodeURIComponent(point.query || point.name);
   const nodeInfo = (point,day,index) => `<div class="map-time">${safe(point.time)}</div><h4>${safe(point.name)}</h4><p>${safe(point.detail)}</p><p class="map-accuracy">定位：${safe(point.accuracy)}</p><a href="${safe(nav(point))}" target="_blank" rel="noopener">用 Naver 查看 / 导航 ↗</a>${point.place?` <a href="#place-${safe(point.place)}" data-place="${safe(point.place)}">看地点详情 ↗</a>`:''}<button class="nearby-trigger" data-nearby-day="${day}" data-nearby-point="${index}">逛这一站附近 · Google / Naver ↗</button>`;
 
-  ROUTES.forEach((route,day) => {
+  function createSection(route,day) {
     const section = document.createElement('section');
     section.className = 'route-map-section';
     section.setAttribute('aria-label',DAYS[day].date+'每日动线地图');
@@ -14,6 +14,7 @@
     document.querySelector(`#day-${day} .timeline`).before(section);
     const state = {section,day,scope:'core',selected:route.core[0],route,map:null,layer:null,markers:new Map(),arrows:[]};
     maps.set(day,state);
+    if(route.export.startsWith('blob:'))section.querySelector('.map-download').download='seoul-'+DAYS[day].date+'-explore.svg';
     section.addEventListener('click',event => {
       const scope=event.target.closest('[data-map-scope]');
       if(scope){state.scope=scope.dataset.mapScope;if(state.scope==='core'&&!state.route.core.includes(state.selected))state.selected=state.route.core[0];draw(day);const list=state.section.querySelector('.map-itinerary'),item=list.querySelector(`[data-map-stop="${state.selected}"]`);list.scrollTop+=item.getBoundingClientRect().top-list.getBoundingClientRect().top-45;return;}
@@ -22,7 +23,8 @@
       if(stop)select(state,+stop.dataset.mapStop,true);
     });
     select(state,state.selected,false);
-  });
+  }
+  ROUTES.forEach(createSection);
 
   function fit(state){
     if(!state.map)return;
@@ -104,6 +106,12 @@
     });
     fit(state);arrows(state);spreadPins(state);select(state,state.selected,false);
   }
+  document.addEventListener('itinerarychange',event=>{
+    const day=event.detail,state=maps.get(day);
+    if(state){if(state.map)state.map.remove();state.section.remove();maps.delete(day);}
+    createSection(ROUTES[day],day);
+    if(document.querySelector('#day-'+day).classList.contains('active'))draw(day);
+  });
   document.addEventListener('daychange',event=>requestAnimationFrame(()=>draw(event.detail)));
   draw(0);
 })();
