@@ -1,2 +1,7 @@
-# seoul-deobi-trip
-Seoul, with you — 2026 December THE BOYZ fan travel journal
+# Seoul, with you
+
+2026年12月5–9日 THE BOYZ 首尔旅行手帐。两人同行，长安洞住宿，逛街拍照优先。
+
+静态 HTML/CSS/JavaScript，无构建依赖。地点卡片区分已查地址、粉丝同款线索和待核实项目。打卡记录保存在浏览器本地。
+
+研究日期：2026-11-16。营业状态及活动规则请出行前再次核对。
