@@ -31,7 +31,7 @@
     panel.querySelector('.nearby-naver').href='https://map.naver.com/p/search/'+encode(naverQuery);
     panel.querySelector('.nearby-google').href=google;
     panel.querySelector('.nearby-center').href=context.naver||center;
-    panel.querySelector('.nearby-status').textContent=term?'正在显示：'+(custom||chosen[1])+' · 可打开完整地图查看店铺详情':'显示中心地点和周围地图标记；点上面的类别可搜更多店。';
+    panel.querySelector('.nearby-status').textContent=(term?'已请求地图：'+(custom||chosen[1]):'已请求中心地点地图，点类别可搜附近店铺')+'。若下方空白，请点上面的 Naver 或 Google 完整地图链接。';
     panel.querySelectorAll('[data-nearby-category]').forEach(button=>button.setAttribute('aria-pressed',String(!custom&&button.dataset.nearbyCategory===category)));
     const iframe=panel.querySelector('iframe');
     iframe.src='https://www.google.com/maps?q='+encode(query)+'&output=embed&hl=zh-CN&z=16';

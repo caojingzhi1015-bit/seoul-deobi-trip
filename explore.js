@@ -2,18 +2,19 @@
 (() => {
  const key='seoul-explore-v1',seen='seoul-explore-seen',safe=esc;
  const base=JSON.parse(JSON.stringify(ROUTES));
- const tags={bagel:['面包甜品','咖啡店',40,25],octopus:['韩式料理','街区夜景',105,60,'辣'],bytp:['拍照打卡','逛街买衣服',0,30],gopchang:['烤肉内脏',null,100,60,'内脏'],darak:['西餐简餐','咖啡店',100,60],minari:['汤饭热食',null,85,45],sm:[null,'城市建筑',0,25],forest:[null,'自然公园',0,40],daelim:['咖啡','城市建筑',45,40],bongchu:['韩式料理',null,115,50,'辣'],hybe:[null,'城市建筑',0,20],passion:['面包甜品','咖啡店',80,35],han:['面包甜品',null,35,20],salt:['面包甜品',null,30,20],sando:['面包甜品','咖啡店',65,45],ason:[null,'逛街买衣服',0,45],coy:[null,'逛街买衣服',0,45],aeae:[null,'逛街买衣服',0,45],musinsa:[null,'逛街买衣服',0,60],standard:[null,'逛街买衣服',0,45],matin:[null,'逛街买衣服',0,45],standoil:[null,'包包饰品',0,40],tamb:[null,'香氛美妆',0,30],haus:[null,'城市建筑',0,50],mardi:[null,'逛街买衣服',0,35],diptyque:[null,'香氛美妆',0,45],daiso:[null,'生活小物',0,40],nyum:[null,'包包饰品',0,40],nyuh:[null,'包包饰品',0,40],nyud:[null,'包包饰品',0,40],hangang:[null,'江景散步',0,45],convenience:['便利店小吃','江景散步',40,30],mangwon:['市场小吃','传统市场',60,90],gwangjang:['市场小吃','传统市场',75,90],'subdued-popup':[null,'逛街买衣服',0,35],'chanel-popup':[null,'拍照打卡',0,35]};
+ const tags={bagel:['面包甜品','咖啡店',40,25],octopus:['韩式料理','街区夜景',105,60,'辣'],bytp:['拍照打卡','逛街买衣服',0,30],gopchang:['烤肉内脏',null,100,60,'内脏'],darak:['西餐简餐','咖啡店',100,60],minari:['汤饭热食',null,85,45],sm:[null,'城市建筑',0,25],forest:[null,'自然公园',0,40],daelim:['咖啡','城市建筑',45,40],bongchu:['韩式料理',null,115,50,'辣'],hybe:[null,'城市建筑',0,20],passion:['面包甜品','咖啡店',80,35],han:['面包甜品',null,35,20],salt:['面包甜品',null,30,20],sando:['面包甜品','咖啡店',65,45],ason:[null,'逛街买衣服',0,45],coy:[null,'逛街买衣服',0,45],aeae:[null,'逛街买衣服',0,45],musinsa:[null,'逛街买衣服',0,60],standard:[null,'逛街买衣服',0,45],matin:[null,'逛街买衣服',0,45],standoil:[null,'包包饰品',0,40],tamb:[null,'香氛美妆',0,30],haus:[null,'城市建筑',0,50],mardi:[null,'逛街买衣服',0,35],diptyque:[null,'香氛美妆',0,45],daiso:[null,'生活小物',0,40],nyum:[null,'包包饰品',0,40],nyuh:[null,'包包饰品',0,40],nyud:[null,'包包饰品',0,40],hangang:[null,'江景散步',0,45],convenience:['便利店小吃','江景散步',40,30],mangwon:['市场小吃','传统市场',60,90],gwangjang:['市场小吃','传统市场',75,90],'subdued-popup':[null,'逛街买衣服',0,35],'chanel-popup':[null,'拍照打卡',0,35],'rv-angle':['咖啡','咖啡店',75,50],kwangya:[null,'拍照打卡',0,30]};
  const scenes=['江景散步','自然公园','城市建筑','街区夜景','拍照打卡','传统市场'];
  const foods=['韩式料理','汤饭热食','烤肉内脏','西餐简餐','咖啡','面包甜品','市场小吃','便利店小吃'];
  const shops=['逛街买衣服','包包饰品','香氛美妆','生活小物'];
  let saved={profile:null,added:[]};try{const value=JSON.parse(localStorage.getItem(key));if(value&&typeof value==='object')saved={profile:value.profile||null,added:Array.isArray(value.added)?value.added.filter(a=>tags[a.id]&&Number.isInteger(a.day)&&a.day>=0&&a.day<4):[]};}catch{}
- let draft=saved.profile||{groups:['THE BOYZ'],other:'',scenes:[],foods:[],shops:[],avoid:[],budget:100},step=0,focusBack=null;
+ let draft=saved.profile||{groups:['THE BOYZ','Red Velvet'],other:'',scenes:[],foods:[],shops:[],avoid:[],budget:100},step=0,focusBack=null;
  const coord={};base.forEach(r=>r.points.forEach(p=>{if(p.place&&!coord[p.place])coord[p.place]={ll:p.ll,accuracy:p.accuracy};}));
  coord.forest={...coord.sm,accuracy:'首尔林片区代表点，非公园入口'};
+ coord.kwangya={ll:[37.5446,127.0446],accuracy:'SM/首尔林站建筑片区代表点，官方店在B1，非测量入口'};
  coord.passion={ll:[37.53871,127.0021404],accuracy:'OpenStreetMap同门牌地点定位，非入口测量'};
  const candidates=PLACES.filter(p=>tags[p.id]&&coord[p.id]&&!/旧址|尚未|待定位/.test(p.address));
  const originalDay=id=>base.findIndex(r=>r.points.some(p=>p.place===id||(id==='forest'&&p.place==='sm')));
- const recommendedDay=p=>{const d=originalDay(p.id);return d>=0?d:/圣水|首尔林|汉江/.test(p.area)?3:/弘大|新村|望远|延禧/.test(p.area)?2:/汉南|龙山|明洞|狎鸥亭/.test(p.area)?1:0;};
+ const recommendedDay=p=>{const d=originalDay(p.id);return d>=0?d:/圣水|首尔林|汉江/.test(p.area)?3:/弘大|新村/.test(p.area)?0:/望远|延禧|汝矣岛|钟路/.test(p.area)?1:/汉南|龙山|明洞|狎鸥亭|奖忠/.test(p.area)?2:0;};
  const distance=(a,b)=>{const rad=Math.PI/180,lat=(a[0]+b[0])*rad/2;return Math.hypot((a[0]-b[0])*111.2,(a[1]-b[1])*111.2*Math.cos(lat));};
  function insertion(points,ll){let best={at:1,cost:Infinity};for(let i=1;i<points.length-1;i++){if(points[i].home||points[i+1].home)continue;const cost=distance(points[i].ll,ll)+distance(ll,points[i+1].ll)-distance(points[i].ll,points[i+1].ll);if(cost<best.cost)best={at:i+1,cost};}return best;}
  const store=()=>{try{localStorage.setItem(key,JSON.stringify(saved));localStorage.setItem(seen,'1');return true;}catch{return false;}};
@@ -26,7 +27,7 @@
  function render(){
   const titles=['先从喜欢的人开始。','你想看什么样的首尔？','这一趟，想吃些什么？','再留一点时间给逛街。','为你挑出的首尔片段。'];
   let body='';
-  if(step===0)body=`<p>可多选，也可以不追星、直接继续。当前这份是12月5–9日的首尔行程。</p>${choice('groups',['THE BOYZ','BTS','SEVENTEEN','aespa','NCT','Stray Kids'])}<label class="explore-field">其他团体 / 成员<input name="other" maxlength="60" value="${safe(draft.other||'')}" placeholder="也可以写下你的本命"></label><p class="explore-note">本站目前以 THE BOYZ 线索最完整。其他团体会结合风景、饮食和购物推荐，不将普通地点冒充成员同款。</p>`;
+  if(step===0)body=`<p>可多选，也可以不追星、直接继续。当前这份是12月5–9日的首尔行程。</p>${choice('groups',['THE BOYZ','Red Velvet','BTS','SEVENTEEN','aespa','NCT','Stray Kids'])}<label class="explore-field">其他团体 / 成员<input name="other" maxlength="60" value="${safe(draft.other||'')}" placeholder="也可以写下你的本命"></label><p class="explore-note">本站目前以 THE BOYZ 线索为主，并补充 Red Velvet咖啡与官方店线索。其他团体会结合风景、饮食和购物推荐，不将普通地点冒充成员同款。</p>`;
   if(step===1)body=`<p>选几个让你愿意多停一会儿的风景。</p>${choice('scenes',scenes)}`;
   if(step===2)body=`<p>咖啡甜品、热乎乎的正餐，还是市场里边走边吃？</p>${choice('foods',foods)}<h3>不想吃的，也告诉我</h3>${choice('avoid',['不吃辣','不吃内脏','不吃生食'])}<label class="explore-field">每人每餐预算（人民币）<select name="budget">${[[60,'¥20–60 · 实惠优先'],[100,'¥20–100 · 日常舒适'],[150,'¥20–150 · 偶尔吃好一点']].map(([v,t])=>`<option value="${v}" ${+draft.budget===v?'selected':''}>${t}</option>`).join('')}</select></label><p class="explore-note">按已整理的点单预算筛选，不是实时菜单；市场和餐厅仍需现场确认辣度与食材。</p>`;
   if(step===3)body=`<p>选你想逛的类型；不选也可以以散步和吃饭为主。</p>${choice('shops',shops)}<p class="explore-note">推荐从本站已有来源的地点中匹配，不会自动预约、下单或替你改动基础行程。偏好和新增站点保存在当前浏览器。</p>`;
@@ -40,7 +41,8 @@
   if(t[0]&&t[2]>pref.budget)return null;
   if((pref.avoid||[]).includes('不吃辣')&&t[4]==='辣')return null;
   if((pref.avoid||[]).includes('不吃内脏')&&t[4]==='内脏')return null;
-  if((pref.groups||[]).includes('THE BOYZ')&&p.member){score+=4;why.push('THE BOYZ线索，证据级别见来源');}
+  if((pref.groups||[]).includes('THE BOYZ')&&p.member&&p.fandom!=='Red Velvet'){score+=4;why.push('THE BOYZ线索，证据级别见来源');}
+  if((pref.groups||[]).includes('Red Velvet')&&p.fandom==='Red Velvet'){score+=6;why.push('Red Velvet线索，关联与营业见卡片');}
   if((pref.foods||[]).includes(t[0])){score+=5;why.push('喜欢'+t[0]);}
   if((pref.scenes||[]).includes(t[1])){score+=5;why.push('想看'+t[1]);}
   if((pref.shops||[]).includes(t[1])){score+=5;why.push('想逛'+t[1]);}
