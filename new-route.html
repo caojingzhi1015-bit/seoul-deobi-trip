@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首尔新走访路线 · THE BOYZ × Red Velvet</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄</text></svg>">
+<style>
+:root{
+  --mint:#cfeee6; --peach:#fde2d4; --lilac:#e3ddf5; --ink:#2c3a38;
+  --mint-deep:#3f8a7b; --peach-deep:#d98a63; --lilac-deep:#7a6bb0;
+  --glass:rgba(255,255,255,.42); --glass-line:rgba(255,255,255,.65);
+  --shadow:0 10px 34px rgba(60,90,84,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  color:var(--ink); line-height:1.7; min-height:100vh;
+  background:
+    radial-gradient(1200px 600px at 8% -5%, var(--mint) 0%, transparent 55%),
+    radial-gradient(1000px 700px at 100% 0%, var(--peach) 0%, transparent 50%),
+    radial-gradient(900px 800px at 50% 110%, var(--lilac) 0%, transparent 55%),
+    linear-gradient(160deg,#f3faf8,#fdf4ef 60%,#f6f3fc);
+  background-attachment:fixed;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 70px}
+.glass{
+  background:var(--glass); border:1px solid var(--glass-line);
+  backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-radius:22px; box-shadow:var(--shadow);
+}
+nav{position:sticky;top:10px;z-index:50;margin:14px 0 22px;display:flex;gap:6px;
+  padding:8px;border-radius:18px;overflow-x:auto}
+nav a{flex:1 0 auto;text-align:center;text-decoration:none;color:var(--ink);font-size:13px;
+  padding:8px 12px;border-radius:12px;white-space:nowrap}
+nav a:hover{background:rgba(255,255,255,.55)}
+.hero{padding:34px 28px 30px;margin-bottom:26px;position:relative;overflow:hidden}
+.hero .kicker{font-size:12px;letter-spacing:.22em;color:var(--mint-deep);font-weight:600}
+.hero h1{font-size:30px;line-height:1.3;margin:10px 0 12px;font-weight:800}
+.hero p{font-size:14px;color:#4a5a57;max-width:46ch}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{font-size:12px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.55);
+  border:1px solid var(--glass-line)}
+.chip.m{color:var(--mint-deep)}.chip.p{color:var(--peach-deep)}.chip.l{color:var(--lilac-deep)}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin:34px 0 14px}
+.sec-h .no{font-size:13px;font-weight:700;color:var(--mint-deep)}
+.sec-h h2{font-size:19px;font-weight:800}
+.sec-h .rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(63,138,123,.4),transparent)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 2px;margin-bottom:18px}
+.tab{flex:1 0 auto;border:1px solid var(--glass-line);cursor:pointer;font-family:inherit;
+  padding:10px 16px;border-radius:14px;background:rgba(255,255,255,.4);font-size:13px;color:var(--ink)}
+.tab.active{background:linear-gradient(135deg,var(--mint-deep),#5aa898);color:#fff;border-color:transparent;
+  box-shadow:0 6px 16px rgba(63,138,123,.35)}
+.day-head{padding:20px 22px;margin-bottom:4px}
+.day-head .d{font-size:13px;color:var(--mint-deep);font-weight:700}
+.day-head h3{font-size:21px;margin:4px 0 8px}
+.day-head .route{font-size:13px;color:#465653}
+.day-head .intro{font-size:12.5px;color:#5d6b68;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(63,138,123,.3)}
+.tl{margin-top:16px;display:grid;grid-template-columns:74px 26px 1fr;gap:0 10px}
+.tm{font-size:11.5px;font-weight:700;color:var(--mint-deep);padding-top:16px;text-align:right;line-height:1.4}
+.axis{position:relative}
+.axis::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;
+  background:linear-gradient(var(--mint-deep),var(--lilac-deep));opacity:.35}
+.dot{position:sticky;top:90px;width:13px;height:13px;border-radius:50%;margin:18px auto 0;
+  background:#fff;border:3px solid var(--mint-deep);z-index:2}
+.stop{margin:0 0 14px;padding:16px 16px 14px}
+.stop h4{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stop .kr{font-size:12px;color:#6a7a77;font-weight:500}
+.stop .addr{font-size:12px;color:#54635f;margin:8px 0 4px}
+.stop p{font-size:12.5px;color:#43524f;margin-top:6px}
+.stop .lbl{font-size:11.5px;font-weight:700;color:var(--lilac-deep)}
+.stop .row{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.mini{font-size:11px;padding:3px 9px;border-radius:999px;background:rgba(227,221,245,.55);
+  border:1px solid rgba(122,107,176,.25);color:var(--lilac-deep)}
+.mini.food{background:rgba(253,226,212,.6);border-color:rgba(217,138,99,.25);color:var(--peach-deep)}
+.mini.go{background:rgba(207,238,230,.7);border-color:rgba(63,138,123,.25);color:var(--mint-deep)}
+a.naver{font-size:11.5px;text-decoration:none;color:var(--mint-deep);font-weight:700;
+  padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.6);border:1px solid var(--glass-line)}
+a.naver:hover{background:#fff}
+.member{font-size:10.5px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--peach-deep),var(--lilac-deep));
+  padding:2px 9px;border-radius:999px}
+.check{display:flex;align-items:center;gap:7px;margin-top:11px;font-size:11.5px;color:#6a7a77;cursor:pointer}
+.check input{width:16px;height:16px;accent-color:var(--mint-deep)}
+.stop.done{opacity:.62}
+.stop.done h4{text-decoration:line-through}
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
+.lc{padding:16px 18px}
+.lc h4{font-size:14.5px;font-weight:800}
+.lc .kr{font-size:11.5px;color:#6a7a77}
+.lc p{font-size:12.5px;margin-top:7px;color:#43524f}
+.cat-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;
+  padding:2px 9px;border-radius:999px;margin-bottom:8px;
+  background:linear-gradient(135deg,var(--mint-deep),var(--lilac-deep));color:#fff}
+.warn{border-left:3px solid var(--peach-deep)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.hero h1{font-size:25px}.tl{grid-template-columns:62px 20px 1fr;gap:0 7px}}
+footer{text-align:center;font-size:11.5px;color:#7a8784;margin-top:40px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="glass">
+    <a href="#journey">每日路线</a>
+    <a href="#webs">网页概要</a>
+    <a href="#popups">限时快闪</a>
+    <a href="#todo">待确认</a>
+    <a href="#tips">实用提醒</a>
+  </nav>
+
+  <header class="hero glass">
+    <div class="kicker">SEOUL · 05—09 DEC 2026</div>
+    <h1>把喜欢，走成冬日里的首尔日常</h1>
+    <p>为两位女孩重排的五天走访路线：THE BOYZ 同款餐厅与机位，加上 Red Velvet 的咖啡线索，细化到地铁出口、步行分钟与两人预算。</p>
+    <div class="meta">
+      <span class="chip m">两人同行</span>
+      <span class="chip p">住长安洞 · 踏十里/长汉坪</span>
+      <span class="chip l">金浦进出 13:30 返程</span>
+      <span class="chip">逛街拍照优先</span>
+    </div>
+  </header>
+
+  <section id="journey">
+    <div class="sec-h"><span class="no">01</span><h2>每日走访路线</h2><span class="rule"></span></div>
+    <div class="tabs" id="tabs"></div>
+    <div id="dayview"></div>
+  </section>
+
+  <section id="webs">
+    <div class="sec-h"><span class="no">02</span><h2>聊天记录全部网页概要</h2><span class="rule"></span></div>
+    <div class="cards" id="webcards"></div>
+  </section>
+
+  <section id="popups">
+    <div class="sec-h"><span class="no">03</span><h2>限时快闪与圣诞</h2><span class="rule"></span></div>
+    <div class="cards" id="popupcards"></div>
+  </section>
+
+  <section id="todo">
+    <div class="sec-h"><span class="no">04</span><h2>待确认线索</h2><span class="rule"></span></div>
+    <div class="cards" id="todocards"></div>
+  </section>
+
+  <section id="tips">
+    <div class="sec-h"><span class="no">05</span><h2>实用提醒</h2><span class="rule"></span></div>
+    <div class="cards" id="tipcards"></div>
+  </section>
+
+  <footer>
+    数据综合自 ChatGPT 整理记录、eatingupwithtbz 粉丝地图、Threads 攻略、小红书与抖音公开资料。<br>
+    营业时间与价格请出发前以 Naver Map 实时信息为准 · 打卡记录仅保存在本机浏览器
+  </footer>
+</div>
+
+<script>
+const DAYS = [
+{
+  date:"12.05", wk:"周六", h:"落地放行李 · 弘大贝果章鱼与望远刀削面",
+  route:"金浦 → 长安洞放行李 → 弘大入口 → 善旴贝果外带 → 逛弘大 → 弘斯章鱼 → 望远홍두깨刀削面",
+  intro:"按你确认先放行李，再回到西边弘大。一晚要凑贝果、章鱼、刀削面三样，安排贝果外带当餐前小食、章鱼作主餐、刀削面两人共一碗尝味，避免吃撑。贝果店关得早，到弘大先去贝果；望远与弘大在 6 号线上只隔两站，顺路。",
+  stops:[
+    {tm:"12:25–13:40",title:"金浦落地、入境、取行李",tags:[{t:"入境缓冲约75分钟",go:1}],desc:"韩国时间比北京快1小时。延误则后续顺延，朋友自行从仁川入境、互不接送。"},
+    {tm:"13:40–15:30",title:"5号线 → 长安洞住宿侧",tags:[{t:"金浦机场5号线往市区",go:1}],desc:"坐到踏十里/长汉坪后接驳，含列车、出站、公交或短程车留110分钟。"},
+    {tm:"15:30–16:00",title:"民宿放行李、轻装出门",tags:[{t:"随身带护照/返程信息/充电宝",go:1}],desc:"保暖外套随身，行李放下后轻装折返市区。"},
+    {tm:"16:00–17:30",title:"长安洞 → 弘大入口",tags:[{t:"5号线至孔德换机场铁路",go:1},{t:"弘大入口8号口",go:1}],desc:"踏十里/长汉坪往傍花方向，孔德 공덕换机场铁路到弘大入口，含换乘步行留90分钟。"},
+    {tm:"17:30–18:00",title:"善旴贝果 · 先外带",kr:"수상한베이글 홍대",member:"金善旴",
+      tags:[{t:"와우산로15길22",go:1},{t:"两人₩10,000–16,000",food:1}],
+      desc:"贝果店关得早，到弘大先买一两个外带，当逛街区的餐前小食并拍照。开门时间需复核，堂食若要求每人点饮品就外带。",
+      naver:"https://map.naver.com/p/search/수상한베이글 홍대"},
+    {tm:"18:00–18:45",title:"逛弘大购物街",kr:"홍대 거리",
+      tags:[{t:"沿街向餐厅方向慢逛",go:1}],
+      desc:"贝果边走边吃，顺看 NYUNYU、as’on 等服装店橱窗，不进店久留，把购物留给后面顺路时段。",
+      naver:"https://map.naver.com/p/search/홍대"},
+    {tm:"18:45–19:45",title:"弘斯辣炒章鱼 · 两人主餐",kr:"홍스쭈꾸미 홍대본점",member:"孙英宰 Eric",
+      tags:[{t:"어울마당로146",go:1},{t:"两人₩34,000–42,000",food:1}],
+      desc:"点 쭈삼겹（章鱼+五花肉）两人份，先问辣度、炒饭是否含套餐。成员关联属粉丝地址匹配线索。",
+      naver:"https://map.naver.com/p/search/홍스쭈꾸미 홍대본점"},
+    {tm:"19:45–20:15",title:"6号线 → 望远站",tags:[{t:"弘大入口往望远2站",go:1},{t:"望远站2号口",go:1}],
+      desc:"两站约10分钟，出站向望远市场走；市场夜间部分摊位收摊，刀削面店多营业到 20–21 点。"},
+    {tm:"20:15–21:00",title:"望远刀削面 · 两人共一碗",kr:"홍두깨손칼국수",
+      tags:[{t:"望远市场内",go:1},{t:"手切刀削面·鳀鱼高汤",food:1},{t:"两人₩8,000–14,000",food:1}],
+      desc:"市场最有名的手切刀削面，现擀现煮、汤头清甜。前面已吃章鱼和贝果，建议两人共一碗尝味，配免费泡菜。",
+      naver:"https://map.naver.com/p/search/홍두깨손칼국수"},
+    {tm:"21:00–22:30",title:"望远直接回长安洞",tags:[{t:"先查全程末班",go:1}],
+      desc:"6号线回孔德换5号线再接驳，接不上就两人合乘，不假设凌晨有地铁。"}
+  ]
+},
+{
+  date:"12.06", wk:"周日", h:"首尔林 → 圣水 → 建大",
+  route:"长安洞 → 首尔林SM楼外 → 圣水购物巡香 → 圣水阁楼贤在套餐 → 建大RODEO夜市",
+  intro:"三点都在城东、2 号线沿线，由北向南再向东。早上先首尔林散步并拍 SM 楼外，中午到圣水集中购物、巡香、吃贤在套餐，傍晚再坐 2 号线到建大逛 RODEO 夜市。圣水香水可按网页概要的笔记挑 3–4 家，不必全逛。",
+  stops:[
+    {tm:"08:00–08:30",title:"简早餐、出门",tags:[{t:"每人₩3,000–5,000",food:1}],desc:"便利店饭团酸奶，穿好走的鞋与保暖外套。"},
+    {tm:"08:30–09:45",title:"5号线 → 王十里 → 水仁盆唐线",tags:[{t:"王十里换乘",go:1},{t:"首尔林5号口",go:1}],
+      desc:"往首尔林方向，含接驳换乘预算60–75分钟。"},
+    {tm:"09:45–10:10",title:"SM 大楼 · 楼外25分钟",kr:"SM엔터테인먼트",member:"Red Velvet 全员",
+      tags:[{t:"왕십리로83-21",go:1}],
+      desc:"首尔林5号口公共空间拍照，可带小卡合照，办公区不参观。",naver:"https://map.naver.com/p/search/SM엔터테인먼트"},
+    {tm:"10:10–10:40",title:"首尔林短散步",kr:"서울숲",
+      tags:[{t:"接延武场3街向圣水",go:1}],
+      desc:"公园入口走30分钟，天气差直接进圣水购物区，不深入。",naver:"https://map.naver.com/p/search/서울숲"},
+    {tm:"10:40–11:25",title:"Matin Kim · 先逛西侧",kr:"마뗑킴 성수 플래그십",tags:[{t:"연무장3길9",go:1},{t:"11:00–20:00",go:1}],
+      desc:"试衣后继续向东，不午后回来。",naver:"https://map.naver.com/p/search/마뗑킴 성수"},
+    {tm:"11:25–12:00",title:"TAMBURINS · 巡香第一站",kr:"탬버린즈 성수",tags:[{t:"연무장5길8",go:1},{t:"11:00–21:00",go:1}],
+      desc:"试香后拍标签，避免多味混在手腕；香水按笔记挑 3–4 家。",naver:"https://map.naver.com/p/search/탬버린즈 성수"},
+    {tm:"12:00–12:50",title:"水芹汤饭 · 午餐",kr:"능동미나리 성수점",tags:[{t:"연무장길42",go:1},{t:"每人₩12,000–17,000",food:1}],
+      desc:"点水芹牛骨汤，生牛肉大盘与酒非默认。",naver:"https://map.naver.com/p/search/능동미나리 성수점"},
+    {tm:"12:50–13:20",title:"韩贞仙 + 盐面包外带",kr:"한정선 / 자연도소금빵",tags:[{t:"2号线4号口",go:1},{t:"两人₩8,000–14,000",food:1}],
+      desc:"水果麻薯买2个分食，盐面包两人一组，排队过长二选一。",naver:"https://map.naver.com/p/search/한정선 성수"},
+    {tm:"13:20–14:00",title:"STAND OIL / 香水续逛",kr:"스탠드오일 성수",tags:[{t:"연무장11길19",go:1},{t:"11:00–20:00",go:1}],
+      desc:"试包确认款式，NONFICTION、LE LABO 等香水顺路挑看，不回头补逛。",naver:"https://map.naver.com/p/search/스탠드오일 성수"},
+    {tm:"14:00–14:40",title:"CHANEL 圣水圣诞快闪",kr:"샤넬 홀리데이 팝업",
+      tags:[{t:"성수이로7가길9",go:1},{t:"11:00–20:00 末入19:30",go:1}],
+      desc:"雪景木屋主题，先看官方预约，排队超时段就略过。",naver:"https://map.naver.com/p/search/샤넬 성수 팝업"},
+    {tm:"14:40–15:40",title:"圣水阁楼 · 贤在套餐",kr:"성수다락",member:"李贤在",
+      tags:[{t:"뚝섬로9길20 2楼",go:1},{t:"两人两道₩34,000–40,000",food:1}],
+      desc:"三楼有应援空间、收据会写 THE BOYZ；蟹肉辣奶油烩饭、奶油洋葱薯条、烤猪颈肉。周日营业需复核。",
+      naver:"https://map.naver.com/p/search/성수다락"},
+    {tm:"15:40–16:20",title:"HAUS NOWHERE 收尾",kr:"하우스 노웨어 서울",tags:[{t:"뚝섬로433",go:1},{t:"11:00–21:00",go:1}],
+      desc:"眼镜与香氛精选40分，同楼也有 TAMBURINS。",naver:"https://map.naver.com/p/search/하우스 노웨어"},
+    {tm:"16:20–17:00",title:"2号线 → 建大入口",tags:[{t:"圣水往建大2站",go:1},{t:"建大入口站",go:1}],
+      desc:"2号线向东两站约15分钟，出站即建大 RODEO 街区。"},
+    {tm:"17:00–19:30",title:"建大 RODEO · 夜市与 Common Ground",kr:"건대 로데오거리 / 커먼그라운드",
+      tags:[{t:"蓝色集装箱商场",go:1},{t:"夜市小吃两人₩16,000–26,000",food:1}],
+      desc:"先逛 Common Ground 集装箱商场买潮牌，再沿 RODEO 街吃夜市小吃，年轻商圈氛围足。",
+      naver:"https://map.naver.com/p/search/커먼그라운드"},
+    {tm:"19:30–21:00",title:"建大 → 长安洞",tags:[{t:"2号线王十里换5号线",go:1},{t:"先查末班",go:1}],
+      desc:"含接驳留80分钟，接不上两人合乘。"}
+  ]
+},
+{
+  date:"12.07", wk:"周一", h:"汝矣岛购物 · 现代百货与汉江公园",
+  route:"长安洞 → 汝矣岛现代百货 → 5楼圣诞村 → 汝矣岛汉江公园 → 回程",
+  intro:"今天节奏放慢，集中在汝矣岛一个区域。下午逛现代百货（含 5 楼纽约复古圣诞村），傍晚步行到汝矣岛汉江公园看江景、喝热饮，周一百货人相对少。",
+  stops:[
+    {tm:"09:00–10:15",title:"住宿 → 汝矣岛",tags:[{t:"5号线往汝矣岛",go:1},{t:"汝矣岛3号口地下连通",go:1}],
+      desc:"接驳加换乘留75分钟，3号口经地下连接通道进百货。"},
+    {tm:"10:30–13:00",title:"现代百货 · 上午购物",kr:"더현대 서울",
+      tags:[{t:"여의대로108",go:1},{t:"服装包包约2.5小时",go:1}],
+      desc:"先逛服装、包包与鞋履，B1 甜品区可作午间休息。这是百货不是免税店。",
+      naver:"https://map.naver.com/p/search/더현대 서울"},
+    {tm:"13:00–14:00",title:"百货内午餐",tags:[{t:"两人₩24,000–36,000",food:1}],
+      desc:"B1 美食区或餐厅层解决，避开外面冷风，顺便休息。"},
+    {tm:"14:00–15:30",title:"5楼圣诞村 + 续逛",kr:"더현대 서울 5층",
+      tags:[{t:"八九十年代纽约复古主题",go:1}],
+      desc:"上楼拍圣诞村陈列，再回头补买上午看中的款，结账留足时间。",
+      naver:"https://map.naver.com/p/search/더현대 서울"},
+    {tm:"15:30–15:50",title:"步行到汝矣渡口公园",tags:[{t:"走人行过街设施",go:1}],desc:"向汉江走约20分钟，不穿车道。"},
+    {tm:"15:50–16:40",title:"汝矣岛汉江公园 · 热饮江景",kr:"여의도한강공원",
+      tags:[{t:"汝矣渡口2/3号口",go:1},{t:"两人₩8,000–14,000",food:1}],
+      desc:"便利店各买一杯热饮或共享小食，近入口拍江景，12 月风大、室外控制在 40 分钟内。",
+      naver:"https://map.naver.com/p/search/여의도한강공원"},
+    {tm:"16:40–18:00",title:"汝矣岛 → 长安洞",tags:[{t:"5号线回程",go:1}],
+      desc:"今天结束早，回住宿附近吃晚餐、整理前几天的购物，为明洞+新村养足精神。"}
+  ]
+},
+{
+  date:"12.08", wk:"周二", h:"明洞购物 → 新村9900烤牛肠",
+  route:"长安洞 → 明洞新世界/乐天免税 → NYUNYU → OFF药局 → 大创 → 新村착한곱창 → 新村商圈",
+  intro:"白天在明洞集中扫免税和药妆，傍晚坐地铁到新村吃 9900 烤牛肠、逛年轻商圈。明洞与新村之间地铁约 20–30 分钟。착한곱창 16:00 才开门，安排在晚餐时段。",
+  stops:[
+    {tm:"08:30–09:30",title:"住宿 → 明洞",tags:[{t:"5号线换4号线至会贤",go:1},{t:"会贤7号口",go:1}],
+      desc:"含接驳换乘留60分钟，先到新世界方向。"},
+    {tm:"09:30–10:30",title:"新世界免税 · 明洞起点",kr:"신세계면세점 명동",
+      tags:[{t:"퇴계로77 본점10楼",go:1},{t:"周二至20:00",go:1}],
+      desc:"先核香水美妆最终价与金浦提货，问清最晚下单时间。",
+      naver:"https://map.naver.com/p/search/신세계면세점 명동"},
+    {tm:"10:30–11:15",title:"乐天免税 · 明洞本店",kr:"롯데면세점 명동본점",
+      tags:[{t:"을지로30 百货9–12楼",go:1},{t:"09:30–20:00",go:1}],
+      desc:"比较同容量香水美妆，免税楼层与普通百货区分。",
+      naver:"https://map.naver.com/p/search/롯데면세점 명동본점"},
+    {tm:"11:15–12:15",title:"明洞服装美妆街",tags:[{t:"每家先挑款再试",go:1}],
+      desc:"沿明洞主街挑主流品牌，顺路看圣诞灯光。"},
+    {tm:"12:15–13:00",title:"明洞简午餐",tags:[{t:"人均₩8,000–12,000",food:1}],desc:"留肚子给晚上的烤牛肠，午餐从简。"},
+    {tm:"13:00–13:50",title:"NYUNYU WORLD",kr:"뉴뉴월드 명동점",tags:[{t:"명동6길30 B1–4楼",go:1},{t:"4号线6号口",go:1}],
+      desc:"集中买饰品，OFF 药局就在旁边。",naver:"https://map.naver.com/p/search/뉴뉴월드 명동점"},
+    {tm:"13:50–14:40",title:"OFF 药局 · 压缩喵同款",kr:"오프약국 OFF DRUG STORE",
+      tags:[{t:"명동4길26 1楼",go:1},{t:"10:00–24:00",go:1},{t:"中文职员·现场退税",go:1}],
+      desc:"就在 NYUNYU 旁边，仓储式药妆折扣大，满 1.5 万韩元可现场退税，按需做功课。博主压缩喵（bvljuly）在此上班。",
+      naver:"https://map.naver.com/p/search/오프약국 명동"},
+    {tm:"14:40–15:10",title:"大创明洞站店",kr:"다이소 명동역점",tags:[{t:"퇴계로134-1",go:1}],
+      desc:"文具、旅行收纳、角色周边快逛，控制时间。",naver:"https://map.naver.com/p/search/다이소 명동역점"},
+    {tm:"15:10–16:00",title:"明洞 → 新村",tags:[{t:"地铁至新村约20–30分钟",go:1},{t:"新村站",go:1}],
+      desc:"착한곱창 16:00 开门，到点正好入场。"},
+    {tm:"16:00–17:30",title:"착한곱창 · 9900烤牛肠",kr:"착한곱창",
+      tags:[{t:"新村站步行6分钟",go:1},{t:"모듬구이 9,900/份",food:1},{t:"月~土16:00–01:00",go:1}],
+      desc:"招牌烤牛肠拼盘、大肠每份都 9900 韩元，两人点拼盘加大肠，配米饭和汤，性价比高。周二正常营业。",
+      naver:"https://map.naver.com/p/search/착한곱창 신촌"},
+    {tm:"17:30–19:30",title:"新村商圈逛街",kr:"신촌 거리",
+      tags:[{t:"年轻学生商圈",go:1}],
+      desc:"沿延世路逛潮牌、美妆和咖啡，价格比明洞亲民，顺路买最后伴手礼。",
+      naver:"https://map.naver.com/p/search/신촌"},
+    {tm:"19:30–21:00",title:"新村 → 长安洞",tags:[{t:"先查末班",go:1}],
+      desc:"地铁接驳回住宿，到家先收行李，次日按送机节奏出门。"}
+  ]
+},
+{
+  date:"12.09", wk:"周三", h:"退房送机 · 金浦13:30返程",
+  route:"长安洞退房 → 5号线 → 金浦机场 → 退税 → 提货 → 登机",
+  intro:"按13:30金浦返程倒推，11:30前到机场，不安排市内新景点。朋友仁川行程不套用。",
+  stops:[
+    {tm:"07:45–08:30",title:"退房、早餐、检查物品",tags:[{t:"护照/登机信息/退税单",go:1}],desc:"确认无遗漏，按房东要求归还钥匙。"},
+    {tm:"08:30–09:30",title:"接驳 → 5号线 → 金浦",tags:[{t:"预留约60分钟",go:1}],desc:"含接驳与候车，不压点。"},
+    {tm:"09:30–11:30",title:"金浦机场办理值机",tags:[{t:"国际航班提前2小时",go:1}],desc:"核对行李、登机口与安检时间。"},
+    {tm:"11:30–12:30",title:"退税与免税提货",tags:[{t:"先退税再提货",go:1}],desc:"按标识办理，确认提货点与登机口距离。"},
+    {tm:"12:30–13:30",title:"登机、返程",tags:[{t:"留意登机口变更",go:1}],desc:"登机前留足步行时间。"}
+  ]
+}
+];
+
+const WEBS=[
+ {cat:"主站",t:"你原本的五天行程网站",p:"seoul-deobi-trip 单页，含 59 个地点、12/5–12/9 完整时间线，每个地点带地址、韩文名、地铁出口、成员关联、预算与来源链接，是本次重排的事实底座。",
+  link:"https://caojingzhi1015-bit.github.io/seoul-deobi-trip/"},
+ {cat:"主站",t:"eatingupwithtbz 粉丝地图",p:"粉丝整理的 THE BOYZ 同款店地图，共 125 家，分餐厅、咖啡、购物三类，每条带地址与关联成员，是补同款店的主要来源。",
+  link:"https://eatingupwithtbz.netlify.app/"},
+ {cat:"主站",t:"seoulmate 韩流平台",p:"按字母与成员筛选核实：T 类仅 TWICE/TXT/TWS、R 类仅 RIIZE，未收录 THE BOYZ 与 Red Velvet，本次参考价值有限。",
+  link:"https://seoulmate.cn/#/kpop"},
+ {cat:"Threads×30",t:"sooyi.t 分区攻略系列（29 条）",p:"攻略博主 sooyi.t 的分区帖，覆盖弘大、延禧、望远、圣水、汉南、明洞等，正文配 6 个 NAVER 收藏短链与 10 个外部工具站；信息密度高，是外部网站的主要入口。",
+  link:"https://www.threads.com/@sooyi.t"},
+ {cat:"Threads×30",t:"汉南洞 TBZ 烤肉帖（llkkyy33_）",p:"确认汉南洞有成员同款烤肉，但店名只出现在帖子图片、正文未写，已列入待确认。",
+  link:"https://www.threads.com/share/ECIu8GOEY"},
+ {cat:"外部地图",t:"koreareally 弘大深度街区指南",p:"中文长文，拆解弘大、延南、延禧、合井各街区的步行逻辑与逛法，可用于 12/5 弘大动线参考。",
+  link:"https://koreareally.com/zh/2026/11/06/hongdae-area-guide-zh/"},
+ {cat:"外部地图",t:"hanlyu-map 韩流地图",p:"约 1.7 万个韩流拍摄地，确认收录 THE BOYZ 共 10 处，含 32 Parfait 弘大店（Eric 32cm 冰淇淋）、Pie Hole、Pizza Express 等，首尔内可顺路打卡。",
+  link:"https://hanlyu-map.com/"},
+ {cat:"外部地图",t:"dubaicookiemap 迪拜曲奇库存地图",p:"实时显示各门店迪拜曲奇（Dubai Cookie）库存，想买网红曲奇先看地图避免跑空。",
+  link:"https://www.dubaicookiemap.com/"},
+ {cat:"外部地图",t:"flower-map 四季花卉地图",p:"708 处花卉观赏点，按季节标注；12 月首尔户外花季已过，本次主要作了解。",
+  link:"https://flower-map.miniapp-factory.com/"},
+ {cat:"外部地图",t:"야장맵 户外夜场地图",p:"户外夜餐/布帐马车社区地图，可找晚上露天喝酒吃小吃的地方，适合作为夜宵备选。",
+  link:"https://xn--r02bv4soub.kr/"},
+ {cat:"外部地图",t:"거지맵 低预算美食地图",p:"8000 韩元以下的平价美食维基，适合控制预算时找本地人常吃的小店。",
+  link:"https://xn--v69ak0xskm.com/"},
+ {cat:"外部地图",t:"offmate 生咖宣传档案",p:"K-POP 生咖、应援宣传活动档案，可查偶像生日咖啡与快闪，不是免税折扣站。",
+  link:"https://www.offmate.kr/"},
+ {cat:"实用工具",t:"wififree 公共 WiFi 查询",p:"韩国官方公共免费 WiFi 分布，出门可对照找热点，节省流量。",
+  link:"https://wififree.kr/index.do"},
+ {cat:"实用工具",t:"foodsafetykorea 宠物同行餐厅",p:"政府官方数据库，2026 年 3 月起标注可携宠物同行的餐厅；本次两人无宠物，仅作了解。",
+  link:"https://www.foodsafetykorea.go.kr/portal/petKorea.do"},
+ {cat:"小红书",t:"sooyi.t 圣水香水地图（12 品牌）",p:"10 张图巡香路线，含 NONFICTION、TAMBURINS、BIBIANG、LE LABO、SW19、SHIRO、LOE、HETRAS、DIPTYQUE、KINFOLK、LUSH、LOHWE，带价格与门店分布，用于 12/6 圣水巡香。",
+  link:"https://www.xiaohongshu.com/explore/6a43aa7500000000220179d0"},
+ {cat:"小红书",t:"压缩喵明洞药局（오프약국）",p:"博主压缩喵（bvljuly）在韩国药妆店上班，其明洞仓储式药局笔记指向 OFF DRUG STORE，在 NYUNYU 旁边、有中文职员、满 1.5 万韩元可现场退税，已排进 12/8。",
+  link:"https://www.xiaohongshu.com/explore/6a9c6acf000000002a0063a4"}
+];
+
+const POPUPS=[
+ {t:"SUBDUED 汉南限时快闪",kr:"섭듀드 한남 팝업",p:"2026/10/3–12/31，11:00–21:00，汉南洞683-122。FW26女装，针织蕾丝叠穿、卫衣牛仔，有翅膀拍照区、拍照亭与签名墙。",
+  link:"https://www.musinsa.com/content/1555514743777354996"},
+ {t:"CHANEL 圣水圣诞快闪",kr:"샤넬 홀리데이 팝업",p:"2026/11/21–12/31，11:00–20:00 末入19:30，圣水成水二路7街9号。生莫里茨雪景、山间木屋，支持预约或现场，先看官方入口。",
+  link:"https://www.marieclairekorea.com/beauty/2026/11/chanel-beauty-6/"},
+ {t:"AEAE MUSINSA 店中店",kr:"AEAE 무신사 메가스토어",p:"2026/11/1–2027/1/31，圣水成水二路62号，覆盖全部行程。",
+  link:"https://www.musinsa.com/content/1561962984707313660"},
+ {t:"现代百货 5楼圣诞村",kr:"더현대 서울",p:"八九十年代纽约复古主题圣诞陈列，12/7在百货时段内上楼拍照，具体日期以官方为准。",
+  link:"https://thehyundaiseoul.ehyundai.com/about/location"},
+ {t:"明洞 / 蚕室圣诞灯光",kr:"명동·석촌호",p:"新世界、乐天百货外墙灯光与石村湖圣诞氛围，可顺路远看，不额外安排行程。",
+  link:"https://map.naver.com/p/search/석촌호수"}
+];
+
+const TODO=[
+ {t:"汉南洞 TBZ 烤肉 · 店名在帖子图片",p:"Threads 线索确认汉南有成员同款烤肉，但正文未写店名，需看原帖图片或补定位后再排。"},
+ {t:"神秘贝果 · 成员原帖未取得",p:"地址与营业时间有来源，善旴关联来自粉丝指南，出发前复核。"},
+ {t:"弘斯章鱼 · 同款待证",p:"地址已对应，成员关联属粉丝线索，点单与炒饭规则当天确认。"},
+ {t:"贵韩猪蹄 · 营业状态冲突",p:"平台信息冲突，未确认前不专程前往。"},
+ {t:"圣水樱桃包 · 疑似闭店",p:"旧标记永久关闭，不按旧址找店。"},
+ {t:"南杨州别内烤肉与棒球中心",p:"会损失明洞半天，当前主线不建议，若坚持需单独规划往返。"}
+];
+
+const TIPS=[
+ {t:"交通与末班",p:"全程以地铁为主，先查末班车；接不上就两人合乘，不假设凌晨有地铁。"},
+ {t:"免税提货",p:"本人金浦出境，所有订单按金浦提货点核对，不能套用朋友仁川信息；下单前确认最晚时间。"},
+ {t:"冬日保暖",p:"12月汉江与首尔林风大，外套、围巾、暖宝宝随身，室外停留可缩短。"},
+ {t:"预算节奏",p:"购物与餐饮分开记账，热门店排队过长就二选一，不为等出炉单独绕回。"},
+ {t:"拍摄礼仪",p:"进入摊位或店内先看是否允许摄影，不堵通道、不守候艺人非公开行程。"},
+ {t:"信息复核",p:"营业时间、价格、快闪名额以 Naver Map 与官方渠道当日信息为准，本页不替代实时导航。"}
+];
+const tabsEl=document.getElementById("tabs"), dayview=document.getElementById("dayview");
+let cur=0;
+const store=JSON.parse(localStorage.getItem("seoulChecks")||"{}");
+
+function renderTabs(){
+  tabsEl.innerHTML=DAYS.map((d,i)=>
+    `<button class="tab ${i===cur?'active':''}" data-i="${i}">${d.date} ${d.wk}</button>`).join("");
+  tabsEl.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;renderAll();});
+}
+
+function renderDay(){
+  const d=DAYS[cur];
+  const stops=d.stops.map((s,si)=>{
+    const id=`${d.date}-${si}`, done=store[id];
+    const tags=s.tags.map(t=>`<span class="mini ${t.food?'food':(t.go?'go':'')}">${t.t}</span>`).join("");
+    const mem=s.member?`<span class="member">${s.member}</span>`:"";
+    const nav=s.naver?`<a class="naver" target="_blank" rel="noopener" href="${s.naver}">Naver 地图</a>`:"";
+    return `<div class="tm">${s.tm}</div>
+      <div class="axis"><div class="dot"></div></div>
+      <div class="stop glass ${done?'done':''}">
+        <h4>${s.title} ${s.kr?`<span class="kr">${s.kr}</span>`:""}${mem}</h4>
+        <div class="row">${tags}</div>
+        <p>${s.desc}</p>
+        <div class="row">${nav}</div>
+        <label class="check"><input type="checkbox" data-id="${id}" ${done?'checked':''}>已完成 / 已打卡</label>
+      </div>`;
+  }).join("");
+  dayview.innerHTML=`
+    <div class="day-head glass">
+      <div class="d">${d.date} · ${d.wk}</div>
+      <h3>${d.h}</h3>
+      <div class="route">${d.route}</div>
+      <div class="intro">${d.intro}</div>
+    </div>
+    <div class="tl">${stops}</div>`;
+  dayview.querySelectorAll("input[type=checkbox]").forEach(c=>c.onchange=()=>{
+    store[c.dataset.id]=c.checked;
+    localStorage.setItem("seoulChecks",JSON.stringify(store));
+    c.closest(".stop").classList.toggle("done",c.checked);
+  });
+}
+
+function simpleCards(el,arr,linkKey){
+  el.innerHTML=arr.map(x=>{
+    const link=x[linkKey]?`<a class="naver" target="_blank" rel="noopener" href="${x[linkKey]}">查看来源</a>`:"";
+    return `<div class="lc glass ${el.id==='todocards'?'warn':''}">
+      <h4>${x.t||x.title} ${x.kr?`<span class="kr">${x.kr}</span>`:""}</h4>
+      <p>${x.p}</p><div class="row">${link}</div></div>`;
+  }).join("");
+}
+
+function renderWebs(){
+  document.getElementById("webcards").innerHTML=WEBS.map(x=>{
+    const link=x.link?`<a class="naver" target="_blank" rel="noopener" href="${x.link}">打开链接</a>`:"";
+    return `<div class="lc glass">
+      <span class="cat-tag">${x.cat}</span>
+      <h4>${x.t}</h4>
+      <p>${x.p}</p><div class="row">${link}</div></div>`;
+  }).join("");
+}
+
+function renderAll(){
+  renderTabs(); renderDay();
+  renderWebs();
+  simpleCards(document.getElementById("popupcards"),POPUPS,"link");
+  simpleCards(document.getElementById("todocards"),TODO);
+  simpleCards(document.getElementById("tipcards"),TIPS);
+}
+renderAll();
+</script>
+</body>
+</html>
